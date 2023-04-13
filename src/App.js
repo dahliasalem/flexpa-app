@@ -5,6 +5,7 @@ function App() {
   const [FlexpaLink, setFlexpaLink] = useState(null);
   const [EOB, setEOB] = useState(null);
   const [display, setDisplay] = useState("Button");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const ButtonDisplay = () => {
     return (
@@ -36,6 +37,16 @@ function App() {
       </div>
     );
   };
+  const ErrorDisplay = () => {
+    return (
+      <div className="App">
+        <div className="flex flex-col align-center justify-center min-h-screen text-center">
+          <p className="font-semibold text-2xl"> Unable to fetch your data</p>
+          <p> {errorMsg}</p>
+        </div>
+      </div>
+    );
+  };
 
   const fetchEOB = async (accessToken) => {
     const request = await fetch(FlexpaConfig.eob_url, {
@@ -47,7 +58,21 @@ function App() {
     });
     const result = await request.json();
     setEOB(result);
-    setDisplay("EOB");
+  };
+
+  const fetchAccessToken = async (publicToken) => {
+    const request = await fetch(FlexpaConfig.exchange_url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        public_token: publicToken,
+        secret_key: FlexpaConfig.secret_key,
+      }),
+    });
+    const response = await request.json();
+    return response.access_token;
   };
 
   useEffect(() => {
@@ -71,19 +96,14 @@ function App() {
       publishableKey: FlexpaConfig.publish_key,
       onSuccess: async (publicToken) => {
         setDisplay("Fetch");
-        const request = await fetch(FlexpaConfig.exchange_url, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            public_token: publicToken,
-            secret_key: FlexpaConfig.secret_key,
-          }),
-        });
-
-        const response = await request.json();
-        await fetchEOB(response.access_token);
+        try {
+          const accessToken = await fetchAccessToken(publicToken);
+          await fetchEOB(accessToken);
+          setDisplay("EOB");
+        } catch (e) {
+          setErrorMsg(JSON.stringify(e));
+          setDisplay("Error");
+        }
       },
     });
   });
@@ -93,6 +113,8 @@ function App() {
       return <FetchDisplay />;
     case "EOB":
       return <EOBDisplay />;
+    case "Error":
+      return <ErrorDisplay />;
     default:
       return <ButtonDisplay />;
   }
