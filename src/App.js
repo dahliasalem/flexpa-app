@@ -57,7 +57,7 @@ function App() {
       },
     });
     const result = await request.json();
-    setEOB(result);
+    return result;
   };
 
   const fetchAccessToken = async (publicToken) => {
@@ -98,7 +98,8 @@ function App() {
         setDisplay("Fetch");
         try {
           const accessToken = await fetchAccessToken(publicToken);
-          await fetchEOB(accessToken);
+          const eob = await fetchEOB(accessToken);
+          setEOB(eob);
           setDisplay("EOB");
         } catch (e) {
           setErrorMsg(JSON.stringify(e));
