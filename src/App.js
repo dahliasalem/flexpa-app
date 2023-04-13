@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import FlexpaConfig from "./config.json";
 
 function App() {
   const [FlexpaLink, setFlexpaLink] = useState(null);
@@ -39,7 +40,7 @@ function App() {
 
   const fetchEOB = async (accessToken) => {
     const request = await fetch(
-      "https://api.flexpa.com/fhir/ExplanationOfBenefit?patient=$PATIENT_ID",
+      FlexpaConfig.eob_url,
       {
         method: "GET",
         headers: {
@@ -59,7 +60,7 @@ function App() {
       // https://stackoverflow.com/questions/34424845/adding-script-tag-to-react-jsx
       const script = document.createElement("script");
 
-      script.src = "https://js.flexpa.com/v1/";
+      script.src = FlexpaConfig.link_object;
       script.async = true;
       script.onload = () => setFlexpaLink(window.FlexpaLink);
 
@@ -71,17 +72,17 @@ function App() {
     }
 
     FlexpaLink.create({
-      publishableKey: "pk_test_rOLEv70qS8mD9jvAncRzfnf9SFGB80ehZa4upWZYWEc",
+      publishableKey: FlexpaConfig.publish_key,
       onSuccess: async (publicToken) => {
         setDisplay("Fetch");
-        const request = await fetch("https://api.flexpa.com/link/exchange", {
+        const request = await fetch(FlexpaConfig.exchange_url, {
           method: "POST",
           headers: {
             "content-type": "application/json",
           },
           body: JSON.stringify({
             public_token: publicToken,
-            secret_key: "sk_test_x4uui0gOhNed29Nax9wOUf0_hZ67AThYxXLEZ9KpJuY",
+            secret_key: FlexpaConfig.secret_key,
           }),
         });
 

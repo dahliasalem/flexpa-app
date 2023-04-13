@@ -1,0 +1,7 @@
+{
+    "eob_url": "https://api.flexpa.com/fhir/ExplanationOfBenefit?patient=$PATIENT_ID",
+    "link_object": "https://js.flexpa.com/v1/",
+    "exchange_url": "https://api.flexpa.com/link/exchange",
+    "publish_key": "pk_test_rOLEv70qS8mD9jvAncRzfnf9SFGB80ehZa4upWZYWEc",
+    "secret_key": "sk_test_x4uui0gOhNed29Nax9wOUf0_hZ67AThYxXLEZ9KpJuY"
+}
