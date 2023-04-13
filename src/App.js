@@ -18,7 +18,7 @@ function App() {
 
   const EOBDisplay = () => {
     return (
-      <div className="">
+      <div>
         <pre className="m-10 p-4">{JSON.stringify(EOB, null, 2)}</pre>
       </div>
     );
@@ -92,12 +92,12 @@ function App() {
     });
   });
   switch (display) {
-    case "Button":
-      return <ButtonDisplay />;
     case "Fetch":
       return <FetchDisplay />;
     case "EOB":
       return <EOBDisplay />;
+    default:
+      return <ButtonDisplay />;
   }
 }
 
