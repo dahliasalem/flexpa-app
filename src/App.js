@@ -6,23 +6,6 @@ function App() {
   const [EOB, setEOB] = useState(null);
   const [display, setDisplay] = useState("Button");
 
-  const FetchDisplay = () => {
-    return (
-      <div className="App">
-        <div className="flex flex-col align-center justify-center min-h-screen text-center">
-          <p className="font-semibold text-2xl"> Fetching your data...</p>
-        </div>
-      </div>
-    );
-  };
-
-  const EOBDisplay = () => {
-    return (
-      <div>
-        <pre className="m-10 p-4">{JSON.stringify(EOB, null, 2)}</pre>
-      </div>
-    );
-  };
   const ButtonDisplay = () => {
     return (
       <div className="App">
@@ -37,18 +20,31 @@ function App() {
       </div>
     );
   };
+  const FetchDisplay = () => {
+    return (
+      <div className="App">
+        <div className="flex flex-col align-center justify-center min-h-screen text-center">
+          <p className="font-semibold text-2xl"> Fetching your data...</p>
+        </div>
+      </div>
+    );
+  };
+  const EOBDisplay = () => {
+    return (
+      <div>
+        <pre className="m-10 p-4">{JSON.stringify(EOB, null, 2)}</pre>
+      </div>
+    );
+  };
 
   const fetchEOB = async (accessToken) => {
-    const request = await fetch(
-      FlexpaConfig.eob_url,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "content-type": "application/json",
-        },
-      }
-    );
+    const request = await fetch(FlexpaConfig.eob_url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "content-type": "application/json",
+      },
+    });
     const result = await request.json();
     setEOB(result);
     setDisplay("EOB");
@@ -91,6 +87,7 @@ function App() {
       },
     });
   });
+
   switch (display) {
     case "Fetch":
       return <FetchDisplay />;
