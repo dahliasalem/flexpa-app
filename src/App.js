@@ -1,4 +1,3 @@
-import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -6,11 +5,11 @@ function App() {
   const [EOB, setEOB] = useState(null);
   const [display, setDisplay] = useState("Button");
 
-  const Fetching = () => {
+  const FetchDisplay = () => {
     return (
       <div className="App">
-        <div className="flex flex-col align-center justify-center min-h-screen">
-          <p className="font-semibold text-xl"> Fetching your data...</p>
+        <div className="flex flex-col align-center justify-center min-h-screen text-center">
+          <p className="font-semibold text-2xl"> Fetching your data...</p>
         </div>
       </div>
     );
@@ -95,7 +94,7 @@ function App() {
     case "Button":
       return <ButtonDisplay />;
     case "Fetch":
-      return <Fetching />;
+      return <FetchDisplay />;
     case "EOB":
       return <EOBDisplay />;
   }
